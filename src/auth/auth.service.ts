@@ -17,7 +17,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
     await this.db.query(sql, [username, hashedPassword]);
-    return { message: 'User registered successfully' };
+    return { message: 'User registered successfully ' };
   }
 
   async login(username: string, password: string) {
