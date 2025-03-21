@@ -13,22 +13,22 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async register(username: string, password: string) {
+  async register(full_name: string, email: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    await this.db.query(sql, [username, hashedPassword]);
+    const sql = 'INSERT INTO users (email, password) VALUES (?, ?)';
+    await this.db.query(sql, [email, hashedPassword]);
     return { message: 'User registered successfully ' };
   }
 
-  async login(username: string, password: string) {
-    const sql = 'SELECT * FROM users WHERE username = ?';
-    const users = (await this.db.query(sql, [username])) as RowDataPacket[];
+  async login(email: string, password: string) {
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    const users = (await this.db.query(sql, [email])) as RowDataPacket[];
 
     if (users.length === 0) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const user = users[0] as { id: number; username: string; password: string };
+    const user = users[0] as { id: number; email: string; password: string };
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new UnauthorizedException('Invalid credentials');
@@ -36,7 +36,7 @@ export class AuthService {
 
     // ✅ JWT_SECRET from .env
     const token = this.jwtService.sign(
-      { userId: user.id, username: user.username },
+      { userId: user.id, email: user.email },
       { secret: this.configService.get<string>('JWT_SECRET') },
     );
 

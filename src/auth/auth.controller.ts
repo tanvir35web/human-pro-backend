@@ -14,13 +14,17 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() body: { username: string; password: string }) {
-    return this.authService.register(body.username, body.password);
+  async register(
+    @Body() body: { full_name: string; email: string; password: string },
+  ) {
+    return this.authService.register(body.full_name, body.email, body.password);
   }
 
   @Post('login')
-  async login(@Body() body: { username: string; password: string }) {
-    return this.authService.login(body.username, body.password);
+  async login(
+    @Body() body: { full_name: string; email: string; password: string },
+  ) {
+    return this.authService.login(body.email, body.password);
   }
 
   @UseGuards(JwtAuthGuard)

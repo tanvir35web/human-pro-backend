@@ -14,7 +14,7 @@ export class DatabaseService {
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_NAME'),
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 50,
       queueLimit: 0,
     });
   }
