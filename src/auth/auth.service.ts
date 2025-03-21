@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { DatabaseService } from '../database.service';
+import { DatabaseService } from '../database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { RowDataPacket } from 'mysql2';
